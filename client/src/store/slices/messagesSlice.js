@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import * as API from '../../api';
+import { http as API } from '../../api';
 
 const MESSAGES_SLICE_NAME = 'messages';
 
@@ -28,10 +28,15 @@ const messagesSlice = createSlice({
 
   reducers: {
     newMessageSuccess: (state, { payload }) => {
+      state.error = null;
       if (state.messages.length >= state.limit) {
         state.messages.splice(0, 1);
       }
       state.messages.push(payload);
+    },
+
+    newMessageError: (state, { payload }) => {
+      state.error = payload;
     },
   },
 
@@ -54,6 +59,6 @@ const messagesSlice = createSlice({
 
 const { reducer, actions } = messagesSlice;
 
-export const { newMessageSuccess } = actions;
+export const { newMessageSuccess, newMessageError } = actions;
 
 export default reducer;
