@@ -7,7 +7,6 @@ mongoose
   .then(() => console.log('Connection Ok'))
   .catch(err => console.log('err', err));
 
-// Сtrl-c
 process.on('SIGINT', async () => {
   mongoose.disconnect().then(() => {
     console.log('Mondoose disconnect');
