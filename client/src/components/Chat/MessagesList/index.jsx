@@ -1,16 +1,23 @@
-import { ws } from '../../../api';
+import { useLayoutEffect, useRef } from 'react';
+import Message from '../Message';
+import styles from './MessageList.module.scss';
 
 function MessagesList ({ messages }) {
-  const removeMessage = id => {
-    ws.deleteMessage(id);
-  };
+  const containerRef = useRef(null);
+
+  useLayoutEffect(() => {
+    containerRef.current.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: 'smooth',
+    });
+    console.log('wfwefwef')
+  }, [messages.length, messages]);
 
   return (
-    <ol>
+    <ol className={styles.list} ref={containerRef}>
       {messages.map(m => (
-        <li key={m._id}>
-          <div>{JSON.stringify(m)}</div>
-          <button onClick={() => removeMessage(m._id)}>del</button>
+        <li className={styles.listItem} key={m._id}>
+          <Message message={m} />
         </li>
       ))}
     </ol>

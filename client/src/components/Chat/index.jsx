@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { getMessagesThunk } from '../../store/slices/messagesSlice';
 import MessagesList from './MessagesList';
 import InputMessage from './InputMessage';
+import styles from './Chat.module.scss';
 
 function Chat ({ messages, isFetching, error, get, limit }) {
   useEffect(() => {
@@ -11,18 +12,18 @@ function Chat ({ messages, isFetching, error, get, limit }) {
 
   useLayoutEffect(() => {
     window.scrollTo({
-      top: document.body.scrollHeight,
+      bottom: document.body.scrollHeight,
       behavior: 'smooth',
     });
   }, [messages.length]);
 
   return (
-    <div>
+    <section className={styles.container}>
       {error && <div style={{ color: 'red' }}>ERROR!!!</div>}
       {isFetching && <div>Messages is loading. Please, wait...</div>}
       {!isFetching && !error && <MessagesList messages={messages} />}
       <InputMessage />
-    </div>
+    </section>
   );
 }
 
