@@ -38,6 +38,15 @@ const messagesSlice = createSlice({
     newMessageError: (state, { payload }) => {
       state.error = payload;
     },
+
+    deleteMessageSuccess: (state, { payload }) => {
+      state.error = null;
+      state.messages = state.messages.filter(m => m._id !== payload);
+    },
+
+    deleteMessageError: (state, { payload }) => {
+      state.error = payload;
+    },
   },
 
   extraReducers: builder => {
@@ -59,6 +68,11 @@ const messagesSlice = createSlice({
 
 const { reducer, actions } = messagesSlice;
 
-export const { newMessageSuccess, newMessageError } = actions;
+export const {
+  newMessageSuccess,
+  newMessageError,
+  deleteMessageSuccess,
+  deleteMessageError,
+} = actions;
 
 export default reducer;

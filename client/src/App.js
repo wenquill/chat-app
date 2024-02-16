@@ -5,7 +5,11 @@ import './App.css';
 import { connect } from 'react-redux';
 import { ws } from './api';
 
-function App ({ messages, isFetching, error, limit, create, get }) {
+const initialValues = {
+  body: '',
+};
+
+function App ({ messages, isFetching, error, limit, get }) {
   useEffect(() => {
     get(limit);
   }, [limit]);
@@ -23,6 +27,10 @@ function App ({ messages, isFetching, error, limit, create, get }) {
     formikBag.resetForm();
   };
 
+  const removeMessage = id => {
+    ws.deleteMessage(id);
+  };
+
   return (
     <>
       {error && <div style={{ color: 'red' }}>ERROR!!!</div>}
@@ -30,12 +38,15 @@ function App ({ messages, isFetching, error, limit, create, get }) {
       {!isFetching && !error && (
         <ol>
           {messages.map(m => (
-            <li key={m._id}>{JSON.stringify(m)}</li>
+            <li key={m._id}>
+              <div>{JSON.stringify(m)}</div>
+              <button onClick={() => removeMessage(m._id)}>del</button>
+            </li>
           ))}
         </ol>
       )}
       <hr />
-      <Formik initialValues={{ body: '' }} onSubmit={addMessage}>
+      <Formik initialValues={initialValues} onSubmit={addMessage}>
         {formikProps => (
           <Form>
             <Field name='body'></Field>
